@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AdmLayerType {
+  Adm0
+  Adm1
+  Adm2
+  Adm3
+  Adm4
+  Adm5
+}
+
+model AdmLayer {
+  id          Int                     @id @default(autoincrement())
+  type        AdmLayerType
+  coordinates Unsupported("geometry")
+  name        String
+  location_id Int
+  Location    Location                @relation(fields: [location_id], references: [id])
+
+  
+  @@index([coordinates], map: "adm_layer_coordinates", type: Gist)
+  @@unique([coordinates])
+}
+
+model Details {
+  id          Int        @id @default(autoincrement())
+  phone       String?
+  email       String?
+  website     String?
+  operator    String?
+  condition   String?
+  ticket_info String?
+  Location    Location[]
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  path        String
+  tag         String
+  location_id Int
+  Location    Location @relation(fields: [location_id], references: [id])
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model Location {
+  id                      Int                     @id @default(autoincrement())
+  name                    String?
+  coordinates             Unsupported("geometry")
+  latitude                Float?
+  longitude               Float?
+  tags                    String?
+  category                String?
+  user_entered_address_id Int?
+  details_id              Int?
+  AdmLayer                AdmLayer[]
+  Image                   Image[]
+  Details                 Details?                @relation(fields: [details_id], references: [id])
+  UserEnteredAddress      UserEnteredAddress?     @relation(fields: [user_entered_address_id], references: [id])
+
+  @@index([coordinates], map: "location_coordinates", type: Gist)
+  @@unique([latitude, longitude])
+}
+
+/// This model contains an expression index which requires additional setup for migrations. Visit https://pris.ly/d/expression-indexes for more info.
+model UserEnteredAddress {
+  id         Int        @id @default(autoincrement())
+  street     String
+  locality   String
+  landmark   String
+  created_on DateTime
+  Location   Location[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model spatial_ref_sys {
+  srid      Int     @id
+  auth_name String? @db.VarChar(256)
+  auth_srid Int?
+  srtext    String? @db.VarChar(2048)
+  proj4text String? @db.VarChar(2048)
+}
