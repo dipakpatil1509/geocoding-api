@@ -23,8 +23,7 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This Geocoder API provides accurate and reliable location information by integrating custom proto data with OpenStreetMap (OSM) data by [Geocode Earth API](https://geocode.earth/). It is designed to prioritize proto data for geocoding requests while seamlessly falling back to OSM data if necessary. Additionally, the API enriches proto data with missing address details using OSM data.
 
 ## Installation
 
@@ -58,16 +57,4 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+Please find documentation of [API here](https://documenter.getpostman.com/view/13182971/2sA3kSoikL)
