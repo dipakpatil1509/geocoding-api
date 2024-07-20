@@ -263,6 +263,9 @@ export class AppService {
 	}
 
 	async getGeocoding(text_input: string): Promise<ResponseData[] | null> {
+		if (text_input.length == 0) {
+			throw new BadRequestException('Text input is empty')
+		}
 		try {
 			let locations: ResponseData[];
 			if (this.latLongRegex.test(text_input)) {
