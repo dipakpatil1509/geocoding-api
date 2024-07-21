@@ -85,7 +85,8 @@ export class AppService {
 
 		const locations: Location[] = await this.prisma.$queryRaw`
 			SELECT id FROM "Location"
-			WHERE ST_Equals(coordinates, ST_GeomFromGeoJSON(${coordinates_json})) or ST_Equals(coordinates, ST_GeomFromGeoJSON(${coordinates_reverse_json}));
+			WHERE ST_DWithin(coordinates, ST_GeomFromGeoJSON(${coordinates_json}), 0.0001) 
+			or ST_DWithin(coordinates, ST_GeomFromGeoJSON(${coordinates_reverse_json}), 0.0001);
 		`;
 
 		if (locations.length > 0) {
